@@ -2,7 +2,13 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   setup do
-    @user = User.create({email: 'test@test.com', password: '123456', birthday: Date.today - 27.year, username: 'John'})
+    @user = User.create({
+      email: 'test@test.com',
+      password: '123456',
+      birthday: Date.today - 27.year,
+      username: 'John',
+      country: 'Russia'
+    })
   end
 
   test 'Points: receiving by transaction' do
@@ -90,7 +96,7 @@ class UserTest < ActiveSupport::TestCase
 
   test 'Loyalty tiers: quarterly reward' do
     assert_equal 0, @user.year_points
-    @user.transactions.create(amount: 20000, country: 'Russia', created_at: Time.now.last_quarter)
+    @user.transactions.create(amount: 20000, country: 'Russia', created_at: Time.current.last_quarter)
     assert_equal 2000, @user.year_points
     @user.add_quarterly_points
     assert_equal 2100, @user.year_points
